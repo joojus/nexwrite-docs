@@ -1,0 +1,58 @@
+---
+title: 'User Management'
+description: 'The **User Management** section in the admin panel allows administrators to search, view, block, and delete user accounts. This section provides a clear and structured approach to managing platform users efficiently.'
+icon: 'user-gear'
+---
+
+## Admin Panel UI
+
+1. Navigate to  **Users** in the admin panel.
+
+## Overview
+
+- **Search Users**: Locate users by name, username, or email.
+- **View Profiles**: Access user details, including email, bio, role, and follower count.
+- **Block Users**: Restrict access without deleting the account.
+- **Delete Users**: Permanently remove an account and its associated data.
+- **Pagination**: Navigate through large user lists efficiently.
+
+## Blocking Users
+
+If an administrator blocks a user:
+- ✅ The user **is not deleted** but **cannot log in**.
+- ✅ When attempting to log in, the user will receive a block message.
+- ✅ The user can contact the **site administrator** to inquire about the reason.
+- ✅ The administrator can later **unblock** the user if necessary.
+
+## Deleting Users
+
+If an administrator deletes a user:
+- ❌ The user is **permanently removed** from the database.
+- ❌ All associated content (posts, comments, likes) may be deleted.
+- ❌ The action **cannot be undone**.
+
+## Admin Panel UI
+
+### Searching Users
+- Enter a **name, username, or email** in the search bar.
+- Click **Clear** to reset the search field.
+
+### Blocking a User
+1. Click the **"Block User"** button.
+2. The user will be **denied access to the platform**.
+3. An **unblock option** will be available if needed.
+
+### Deleting a User
+1. Click the **"Delete"** button next to a user.
+2. A confirmation prompt will appear before deletion.
+3. Once deleted, the user **cannot be recovered**.
+
+## Conclusion
+The **User Management** system enables administrators to efficiently handle user access and maintain a secure platform. Blocking users prevents access without deleting their accounts, while deletion removes them permanently. 
+
+---
+
+<Tip>
+ Users
+The API allows dynamic control over user management processes. More details in the [API Reference](/api-reference/user-management) section
+</Tip>

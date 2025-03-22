@@ -1,0 +1,122 @@
+---
+title: 'API Pages Management'
+description: 'This section provides details on managing pages, allowing administrators to create, edit, delete, and retrieve pages efficiently. Pages help structure site content and provide important information to users.'
+---
+
+### API Calls
+- Fetch all pages: `fetchAllPages`
+- Get a page by ID: `fetchPageById`
+- Get a page by slug: `fetchPageBySlug`
+- Create a new page: `createPage`
+- Update a page: `updatePage`
+- Delete a page: `deletePage`
+
+---
+
+## API Documentation
+
+### 1. Get All Pages
+**Endpoint:** `/pages/all`
+**Method:** `GET`
+**Description:** Retrieves a list of all pages.
+**Response:**
+```json
+[
+  {
+    "_id": "abc123",
+    "title": "About Us",
+    "slug": "about-us",
+    "description": "Information about our company",
+    "content": "<p>Welcome to our company...</p>",
+    "createdAt": "2024-02-01T10:00:00Z"
+  }
+]
+```
+
+### 2. Get a Page by ID
+**Endpoint:** `/pages/by-id/{id}`
+**Method:** `GET`
+**Description:** Retrieves details of a single page by its ID.
+**Response:**
+```json
+{
+  "_id": "abc123",
+  "title": "About Us",
+  "slug": "about-us",
+  "description": "Information about our company",
+  "content": "<p>Welcome to our company...</p>",
+  "createdAt": "2024-02-01T10:00:00Z"
+}
+```
+
+### 3. Get a Page by Slug
+**Endpoint:** `/pages/{slug}`
+**Method:** `GET`
+**Description:** Retrieves details of a single page by its slug.
+**Response:**
+```json
+{
+  "_id": "abc123",
+  "title": "About Us",
+  "slug": "about-us",
+  "description": "Information about our company",
+  "content": "<p>Welcome to our company...</p>",
+  "createdAt": "2024-02-01T10:00:00Z"
+}
+```
+
+### 4. Create a New Page
+**Endpoint:** `/pages/create`
+**Method:** `POST`
+**Description:** Creates a new page.
+**Request Body:**
+```json
+{
+  "title": "Contact Us",
+  "slug": "contact-us",
+  "description": "How to reach us",
+  "content": "<p>Here are our contact details...</p>"
+}
+```
+**Response:**
+```json
+{
+  "_id": "xyz789",
+  "title": "Contact Us",
+  "slug": "contact-us",
+  "description": "How to reach us",
+  "content": "<p>Here are our contact details...</p>",
+  "createdAt": "2024-02-02T12:00:00Z"
+}
+```
+
+### 5. Update a Page
+**Endpoint:** `/pages/{id}`
+**Method:** `PUT`
+**Description:** Updates an existing page by its ID.
+**Request Body:**
+```json
+{
+  "title": "Updated About Us",
+  "slug": "about-us",
+  "description": "Updated information about our company",
+  "content": "<p>Updated details...</p>"
+}
+```
+**Response:**
+```json
+{
+  "message": "Page updated successfully"
+}
+```
+
+### 6. Delete a Page
+**Endpoint:** `/pages/{id}`
+**Method:** `DELETE`
+**Description:** Deletes a page by its ID.
+**Response:**
+```json
+{
+  "message": "Page deleted successfully"
+}
+```

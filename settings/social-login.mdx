@@ -1,0 +1,72 @@
+---
+title: 'Social Login'
+description: 'This documentation provides a detailed guide on integrating and managing social login authentication using OAuth providers such as Google, Facebook, and Twitter. Each section covers a specific aspect, including API endpoints, admin panel management, and frontend implementation.'
+icon: 'key'
+---
+## Admin Panel UI
+
+1. Navigate to **Settings** -> **Social Login** in the admin panel.
+2. Enter the **Client ID**, **Client Secret**, and **Callback URL** for each provider.
+3. Click **Submit** to save the credentials.
+4. If a provider is missing credentials, the login button for that provider will not be displayed on the user authentication page.
+---
+
+## 1. Overview
+Social login allows users to authenticate using their existing accounts from third-party providers. This enhances the user experience by reducing the need for manual registration and password management.
+
+Supported providers:
+- Google
+- Facebook
+- Twitter
+
+---
+## 2. Obtaining OAuth Credentials
+Each provider requires an application to be registered in their developer portal. Follow these steps to obtain OAuth credentials for each platform.
+
+### Google OAuth Credentials
+1. Visit the [Google Developer Console](https://console.cloud.google.com/).
+2. Create a new project or select an existing one.
+3. Navigate to **APIs & Services** → **Credentials**.
+4. Click **Create Credentials** and select **OAuth Client ID**.
+5. Configure the **OAuth Consent Screen** (if not already set up).
+6. Choose **Web Application** as the application type.
+7. Set the **Authorized Redirect URIs**:
+   - `https://yourdomain.com/auth/google/callback`
+8. Copy the **Client ID** and **Client Secret**.
+
+### Facebook OAuth Credentials
+1. Visit the [Facebook Developers Portal](https://developers.facebook.com/).
+2. Create a new app and choose **Consumer** as the app type.
+3. Enable **Facebook Login** and configure its settings.
+4. Add the **Valid OAuth Redirect URIs**:
+   - `https://yourdomain.com/auth/facebook/callback`
+5. Navigate to **Settings** → **Basic** and copy the **App ID** and **App Secret**.
+
+### Twitter OAuth Credentials
+1. Visit the [Twitter Developer Portal](https://developer.twitter.com/).
+2. Create a new project and an application.
+3. Navigate to **Keys and Tokens**.
+4. Generate and copy the **API Key**, **API Secret Key**, and **Bearer Token**.
+5. In **Authentication Settings**, set the callback URL:
+   - `https://yourdomain.com/auth/twitter/callback`
+
+---
+
+## 3. Frontend Implementation
+Social login buttons are dynamically displayed based on available credentials.
+
+### Example Login Form with Dynamic Buttons:
+```jsx
+{socialKeys.GOOGLE?.clientId && (
+  <Button onClick={handleGoogleAuth} variant="outline" className="w-full">
+    Login with Google
+  </Button>
+)}
+
+```
+
+<Tip>
+ Authentication
+All API endpoints are authenticated using Bearer tokens and picked up from the specification file. More details in the [API Reference](/api-reference/social-login)  section
+</Tip>
+

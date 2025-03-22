@@ -1,0 +1,126 @@
+---
+title: 'API Comment Reports'
+description: 'This section provides API endpoints for managing reported comments, allowing administrators to review, delete, or block users based on reports.'
+icon: 'comment-dots'
+---
+
+### API Calls
+- Fetch all comment reports: `fetchAllCommentReports`
+- Get a specific report: `fetchCommentReportById`
+- Take action on a report: `handleCommentReportAction`
+- Delete a report: `deleteCommentReport`
+- Get pending reports count: `getPendingCommentReportsCount`
+
+---
+
+## API Documentation
+
+### 1. Get All Comment Reports
+**Endpoint:** `/reports/comments`
+**Method:** `GET`
+**Description:** Retrieves all comment reports with filtering options.
+**Query Parameters:**
+- `page`: Number (pagination)
+- `limit`: Number (pagination limit)
+- `status`: String (`pending`, `resolved`)
+- `blockAuthor`: String (`yes`, `no`)
+
+**Response:**
+```json
+{
+  "reports": [
+    {
+      "_id": "report123",
+      "reason": "harassment",
+      "status": "pending",
+      "reportedItem": {
+        "comment": "This comment is offensive",
+        "commented_by": {
+          "username": "user123",
+          "profile_img": "url"
+        }
+      },
+      "reporter": {
+        "username": "user456",
+        "profile_img": "url"
+      }
+    }
+  ],
+  "total": 5,
+  "page": 1,
+  "totalPages": 1
+}
+```
+
+### 2. Get a Specific Report
+**Endpoint:** `/reports/comments/{reportId}`
+**Method:** `GET`
+**Description:** Retrieves details of a specific reported comment.
+
+**Response:**
+```json
+{
+  "_id": "report123",
+  "reason": "spam",
+  "status": "pending",
+  "reportedItem": {
+    "comment": "This is a spam comment",
+    "commented_by": "user789"
+  },
+  "reporter": {
+    "username": "user456"
+  }
+}
+```
+
+### 3. Take Action on a Comment Report
+**Endpoint:** `/reports/comments/{reportId}/action`
+**Method:** `POST`
+**Description:** Performs administrative actions on a reported comment.
+
+**Request Body:**
+```json
+{
+  "action": "delete_comment"
+}
+```
+**Available Actions:**
+- `delete_comment` – Deletes the reported comment.
+- `block_author` – Blocks the author of the comment.
+- `resolve` – Marks the report as resolved.
+
+**Response:**
+```json
+{
+  "message": "Action performed successfully"
+}
+```
+
+### 4. Delete a Comment Report
+**Endpoint:** `/reports/comments/{reportId}`
+**Method:** `DELETE`
+**Description:** Deletes a comment report from the system.
+
+**Response:**
+```json
+{
+  "message": "Comment report deleted successfully"
+}
+```
+
+### 5. Get Pending Comment Reports Count
+**Endpoint:** `/reports/comments/pending-count`
+**Method:** `GET`
+**Description:** Retrieves the number of pending comment reports.
+
+**Response:**
+```json
+{
+  "comments": 3
+}
+```
+
+---
+
+## Conclusion
+The **Comment Reports Management** system ensures that administrators can efficiently handle reported comments, maintaining content integrity on the platform. The API endpoints streamline moderation and provide a structured approach to handling reports.

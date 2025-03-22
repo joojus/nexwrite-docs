@@ -1,0 +1,122 @@
+---
+title: 'API User Reports'
+description: 'This section describes the **User Reports** management in the admin panel. Admins can view, filter, and take actions on user reports submitted by platform users'
+icon: 'user'
+---
+
+### API Calls
+- Fetch all user reports: `fetchAllUserReports`
+- Get a specific user report: `fetchUserReportById`
+- Take action on a user report: `handleUserReportAction`
+- Delete a user report: `deleteUserReport`
+- Get pending user reports count: `getPendingUserReportsCount`
+
+---
+
+## API Documentation
+
+### 1. Get All User Reports
+**Endpoint:** `/reports/users`
+**Method:** `GET`
+**Description:** Retrieves all user reports with filtering options.
+**Query Parameters:**
+- `page`: Number (pagination)
+- `limit`: Number (pagination limit)
+- `status`: String (`pending`, `resolved`)
+- `blockUser`: String (`yes`, `no`)
+
+**Response:**
+```json
+{
+  "reports": [
+    {
+      "_id": "report123",
+      "reason": "harassment",
+      "status": "pending",
+      "reportedItem": {
+        "username": "user123",
+        "profile_img": "url"
+      },
+      "reporter": {
+        "username": "user456",
+        "profile_img": "url"
+      }
+    }
+  ],
+  "total": 5,
+  "page": 1,
+  "totalPages": 1
+}
+```
+
+### 2. Get a Specific User Report
+**Endpoint:** `/reports/users/{reportId}`
+**Method:** `GET`
+**Description:** Retrieves details of a specific reported user.
+
+**Response:**
+```json
+{
+  "_id": "report123",
+  "reason": "spam",
+  "status": "pending",
+  "reportedItem": {
+    "username": "user789"
+  },
+  "reporter": {
+    "username": "user456"
+  }
+}
+```
+
+### 3. Take Action on a User Report
+**Endpoint:** `/reports/users/{reportId}/action`
+**Method:** `POST`
+**Description:** Performs administrative actions on a reported user.
+
+**Request Body:**
+```json
+{
+  "action": "block_user"
+}
+```
+**Available Actions:**
+- `block_user` – Blocks the reported user.
+- `delete_user` – Deletes the reported user account.
+- `resolve` – Marks the report as resolved.
+
+**Response:**
+```json
+{
+  "message": "Action performed successfully"
+}
+```
+
+### 4. Delete a User Report
+**Endpoint:** `/reports/users/{reportId}`
+**Method:** `DELETE`
+**Description:** Deletes a user report from the system.
+
+**Response:**
+```json
+{
+  "message": "User report deleted successfully"
+}
+```
+
+### 5. Get Pending User Reports Count
+**Endpoint:** `/reports/users/pending-count`
+**Method:** `GET`
+**Description:** Retrieves the number of pending user reports.
+
+**Response:**
+```json
+{
+  "users": 3
+}
+```
+
+---
+
+## Conclusion
+The **User Reports Management** system ensures that administrators can efficiently handle reported users, maintaining community integrity on the platform. The API endpoints streamline moderation and provide a structured approach to handling reports.

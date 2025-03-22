@@ -1,0 +1,297 @@
+---
+title: 'API Sitemap and SEO'
+description: 'This section provides details on how to automatically generate a dynamic sitemap.xml and configure robots.txt so that all pages (static pages, blogs, and categories) are indexed by search engines without manual intervention.'
+
+---
+
+### API Calls
+- Generate Sitemap: `GET /sitemap.xml`
+- Retrieve Robots.txt: `GET /robots.txt`
+
+---
+
+## API Documentation
+
+### 1. Generate Sitemap
+**Endpoint:** `/sitemap.xml`  
+**Method:** `GET`  
+**Description:**  
+Dynamically generates a gzip-compressed sitemap.xml file by aggregating URLs from your site. This includes:
+- **Static pages:** e.g., `/`, `/contact`, `/about`
+- **Dynamic content:** All published blogs (where `draft: false`) and all active categories (where `isActive: true`)
+
+**Response:**  
+The response is a gzip-compressed XML document conforming to the [sitemaps.org protocol](https://www.sitemaps.org/protocol.html). When decompressed, it resembles:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://yourdomain.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://yourdomain.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://yourdomain.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://yourdomain.com/blog/example-blog-id</loc>
+    <lastmod>2024-03-01T12:00:00.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://yourdomain.com/tag/example-category</loc>
+    <lastmod>2024-03-01T12:00:00.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
+```
+
+### 2. Retrieve Robots.txt
+**File:** `robots.txt`  
+**Method:** `GET`  
+**Description:**  
+The robots.txt file instructs search engine crawlers on which parts of your site to index or ignore, and specifies the URL of the sitemap.
+
+**Response Example:**
+```plaintext
+User-agent: *
+Disallow: /admin/
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+---
+
+## Setup & Deployment
+
+### 1. Backend Setup
+#### Dependencies:
+Ensure the sitemap package is installed in your backend:
+```bash
+npm install sitemap
+```
+
+#### Sitemap Route:
+Create a file named `sitemap.routes.js` in your backend’s routes folder with the following content:
+```js
+import express from "express";
+import { SitemapStream, streamToPromise } from "sitemap";
+import { createGzip } from "zlib";
+import Blog from "../Schema/Blog.js";
+import Category from "../Schema/Category.js";
+
+const router = express.Router();
+
+router.get("/sitemap.xml", async (req, res) => {
+  try {
+    const baseUrl = process.env.VITE_WEBSITE_URL || "http://localhost:5173";
+    res.header("Content-Type", "application/xml");
+    res.header("Content-Encoding", "gzip");
+    
+    const smStream = new SitemapStream({ hostname: baseUrl });
+    const pipeline = smStream.pipe(createGzip());
+    
+    smStream.write({ url: "/", changefreq: "daily", priority: 1.0 });
+    smStream.write({ url: "/contact", changefreq: "monthly", priority: 0.7 });
+    smStream.write({ url: "/about", changefreq: "monthly", priority: 0.7 });
+    
+    const blogs = await Blog.find({ draft: false }).select("blog_id updatedAt");
+    blogs.forEach(blog => {
+      smStream.write({
+        url: `/blog/${blog.blog_id}`,
+        changefreq: "weekly",
+        priority: 0.8,
+        lastmodISO: blog.updatedAt.toISOString()
+      });
+    });
+    
+    const categories = await Category.find({ isActive: true }).select("slug updatedAt");
+    categories.forEach(category => {
+      smStream.write({
+        url: `/tag/${category.slug}`,
+        changefreq: "weekly",
+        priority: 0.7,
+        lastmodISO: category.updatedAt.toISOString()
+      });
+    });
+    
+    smStream.end();
+    pipeline.pipe(res);
+  } catch (error) {
+    console.error("Error generating sitemap:", error);
+    res.status(500).end();
+  }
+});
+
+export default router;
+```
+
+#### Mount the Route:
+In your main server file (e.g., `server.js`), import and mount the sitemap router:
+```js
+import sitemapRouter from "./routes/sitemap.routes.js";
+server.use("/", sitemapRouter);
+```
+
+### 2. Environment Configuration
+Ensure you have the correct environment variable in your `.env` file:
+```env
+VITE_WEBSITE_URL=https://yourdomain.com
+```
+
+### 3. Robots.txt Configuration
+Place or update the `robots.txt` file in the root of your public directory with:
+```plaintext
+User-agent: *
+Disallow: /admin/
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+### 4. Search Engine Submission
+Once deployed, verify your sitemap is accessible at `https://yourdomain.com/sitemap.xml`. Submit this URL to Google Search Console, Bing Webmaster Tools, and other search engines.
+
+---
+
+## Conclusion
+The Sitemap and SEO Management module ensures that all static and dynamic URLs on your site are automatically indexed. Configuring your environment variables and updating the `robots.txt` file guarantees proper SEO optimization without manual updates.
+
+> **Sitemap Automation Tip:** Your `sitemap.xml` is generated dynamically upon each request. Ensure your `robots.txt` references the correct sitemap URL and submit it to search engines.
+---
+
+
+
+## Example Usage
+
+### 1. Using SEO Component in a Category Page
+
+If you want the title to display the category name and its description (e.g., *"Programming · Learn coding"*), compute the title and pass it to the SEO component:
+
+```jsx
+// In your CategoryPage.jsx
+import SEO from "../components/SEO";
+
+const seoTitle = currentItem
+  ? `${currentItem.name}${currentItem.description ? " · " + currentItem.description : ""}`
+  : "Category";
+
+return (
+  <div>
+    <SEO titleOverride={seoTitle} />
+    {/* Rest of the page content */}
+  </div>
+);
+```
+
+### 2. SEO Component Implementation (`src/components/SEO.jsx`)
+
+```jsx
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+
+const SEO = ({ titleOverride }) => {
+  const { settings, loading } = useSelector(state => state.siteSettings);
+  const baseUrl = process.env.VITE_BASE_URL || "http://localhost:3000";
+  const location = useLocation();
+
+  if (loading || !settings) return null;
+
+  const pageTitleMapping = {
+    "/": "Homepage",
+    "/contact": "Contact",
+    "/blog": "Blog",
+    "/about": "About Us",
+  };
+
+  const dynamicPageTitle =
+    titleOverride || pageTitleMapping[location.pathname] || settings.metaTitle || settings.siteName;
+  const fullTitle = `${dynamicPageTitle} · ${settings.siteName}`;
+
+  return (
+    <Helmet>
+      <title>{fullTitle}</title>
+      <meta name="description" content={settings.metaDescription} />
+      <meta name="keywords" content={settings.metaKeywords} />
+
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={settings.metaDescription} />
+      <meta property="og:image" content={`${baseUrl}${settings.siteLogoLight}`} />
+      <meta property="og:url" content={process.env.VITE_WEBSITE_URL} />
+      <meta property="og:type" content="website" />
+
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={settings.metaDescription} />
+      <meta name="twitter:image" content={`${baseUrl}${settings.siteLogoLight}`} />
+      <meta name="twitter:card" content="summary_large_image" />
+
+      {settings.favicon && (
+        <link rel="icon" href={`${baseUrl}${settings.favicon}`} type="image/png" />
+      )}
+
+      {settings.googleAnalyticsId && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
+          <script>
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${settings.googleAnalyticsId}');
+            `}
+          </script>
+        </>
+      )}
+    </Helmet>
+  );
+};
+
+export default SEO;
+```
+
+---
+
+## Deployment & Usage
+
+### 1. No Manual Updates Required
+- The `sitemap.xml` is generated dynamically when accessed.
+- New blogs and categories are automatically added.
+
+### 2. Robots.txt Update
+Ensure your `robots.txt` file (placed in the `public` folder or served via a route) includes the correct sitemap URL:
+
+```plaintext
+User-agent: *
+Disallow: /admin/
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+### 3. Submitting to Search Engines
+After deployment, submit your sitemap URL to Google Search Console and Bing Webmaster Tools to improve indexing.
+
+---
+
+## Final Notes
+
+### Dynamic and Flexible
+- The sitemap is always up to date with no manual intervention.
+- Meta tags are generated dynamically per page.
+
+### Comprehensive SEO
+- The **SEO component** ensures structured meta tags.
+- The **automatically generated sitemap** improves search engine indexing and ranking.
+
+<Tip>**Sitemap Automation Tip:** Your `sitemap.xml` is generated dynamically upon each request. Ensure that your `robots.txt` references the correct sitemap URL and submit it to your preferred search engines.</Tip>
+

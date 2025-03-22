@@ -1,0 +1,103 @@
+---
+title: 'Social Keys'
+description: 'The admin panel allows you to store and update OAuth credentials dynamically. These keys are saved in the database and retrieved via API.'
+---
+
+
+
+##  API Endpoints
+The backend provides the following endpoints for managing OAuth authentication:
+
+### Fetch Social Keys
+- **Endpoint:** `GET /env/public/social-keys`
+- **Description:** Fetches stored OAuth credentials.
+- **Response:**
+  ```json
+  {
+    "GOOGLE": {
+      "clientId": "your-google-client-id",
+      "callbackUrl": "https://yourdomain.com/auth/google/callback"
+    },
+    "FACEBOOK": {
+      "clientId": "your-facebook-client-id",
+      "callbackUrl": "https://yourdomain.com/auth/facebook/callback"
+    }
+  }
+  ```
+
+  ### Update Social Keys
+- **Endpoint:** `PUT /env/social-keys`
+- **Description:** Updates OAuth credentials in the database.
+- **Request Body:**
+  ```json
+  {
+    "GOOGLE": {
+      "clientId": "new-client-id",
+      "clientSecret": "new-client-secret",
+      "callbackUrl": "https://yourdomain.com/auth/google/callback"
+    }
+  }
+  ```
+
+  ### Google Authentication
+- **Endpoint:** `POST /auth/google`
+- **Description:** Handles login via Google OAuth.
+- **Request Body:**
+  ```json
+  {
+    "access_token": "google-oauth-access-token"
+  }
+  ```
+
+### Facebook Authentication
+- **Endpoint:** `POST /auth/facebook`
+- **Description:** Handles login via Facebook OAuth.
+- **Request Body:**
+  ```json
+  {
+    "access_token": "facebook-oauth-access-token"
+  }
+  ```
+##  Managing OAuth Keys in Admin Panel
+The **Social Login Management** section in the admin panel allows administrators to store and update OAuth credentials dynamically.
+
+### Steps:
+1. Navigate to **Admin Panel Settings  → Social Login Management**.
+2. Enter the **Client ID**, **Client Secret**, and **Callback URL** for each provider.
+3. Click **Submit** to save the credentials.
+4. If a provider is missing credentials, its login button will not be displayed on the user authentication page.
+
+---
+
+## Frontend Implementation
+In the login form, social login buttons are dynamically displayed based on available credentials. If an OAuth key is missing, the corresponding button is hidden.
+
+```jsx
+{socialKeys.GOOGLE?.clientId && (
+  <Button onClick={handleGoogleAuth} variant="outline" className="w-full">
+    Login with Google
+  </Button>
+)}
+
+{socialKeys.FACEBOOK?.clientId && (
+  <Button onClick={handleFacebookAuth} variant="outline" className="w-full">
+    Login with Facebook
+  </Button>
+)}
+
+{socialKeys.TWITTER?.clientId && (
+  <Button onClick={handleTwitterAuth} variant="outline" className="w-full">
+    Login with Twitter
+  </Button>
+)}
+```
+
+
+This ensures that only properly configured login options are presented to users.
+
+---
+
+##  Conclusion
+Social login enhances user authentication by providing seamless access through Google, Facebook, and Twitter. The admin panel allows for flexible credential management, ensuring secure and efficient authentication.
+
+For any issues, ensure that OAuth credentials are correctly configured in the provider portals and updated in the admin panel.

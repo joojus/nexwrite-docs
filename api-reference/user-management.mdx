@@ -1,0 +1,71 @@
+---
+title: 'User Management'
+description: 'The **User Management** section in the admin panel allows administrators to search, view, block, and delete user accounts. This section provides a clear and structured approach to managing platform users efficiently.'
+---
+
+## API Endpoints
+
+### Fetch Paginated Users
+- **Endpoint:** `GET /admin/users?page={page}&limit={limit}&search={query}`
+- **Description:** Retrieves a paginated list of users.
+- **Example Response:**
+  ```json
+  {
+    "users": [
+      {
+        "_id": "64f8d9e89...",
+        "personal_info": {
+          "fullname": "John Doe",
+          "username": "johndoe",
+          "email": "johndoe@example.com",
+          "profile_img": "https://example.com/profile.jpg",
+          "bio": "Web Developer"
+        },
+        "role": "user",
+        "account_info": {
+          "total_posts": 5,
+          "followers": 120
+        },
+        "status": "active"
+      }
+    ],
+    "totalUsers": 200,
+    "page": 1,
+    "totalPages": 20
+  }
+  ```
+
+### Block a User
+- **Endpoint:** `PUT /admin/users/block/{id}`
+- **Description:** Blocks a user, preventing them from logging in.
+- **Response:**
+  ```json
+  {
+    "message": "User blocked successfully"
+  }
+  ```
+
+### Delete a User
+- **Endpoint:** `DELETE /admin/users/{id}`
+- **Description:** Deletes a user and all associated data.
+- **Response:**
+  ```json
+  {
+    "message": "User deleted successfully"
+  }
+  ```
+
+### Check User Status (Frontend Validation)
+If a blocked user attempts to log in, the frontend should check their status:
+
+```jsx
+if (user.status === "blocked") {
+  return toast.error("Your account has been blocked. Contact support for assistance.");
+}
+```
+
+## Conclusion
+The **User Management** system enables administrators to efficiently handle user access and maintain a secure platform. Blocking users prevents access without deleting their accounts, while deletion removes them permanently. The API allows dynamic control over user management processes.
+
+For any issues, administrators should ensure users are correctly categorized and that API responses are handled appropriately.
+

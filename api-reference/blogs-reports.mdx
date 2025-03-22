@@ -1,0 +1,132 @@
+---
+title: 'API Blog Reports'
+description: 'This section provides details on handling reports via API, enabling administrators to manage reports programmatically.'
+icon: 'newspaper'
+---
+
+### API Calls
+- Fetch all reports: `fetchAllReports`
+- Get a specific report: `fetchReportById`
+- Take action on a report: `handleReportAction`
+- Delete a report: `deleteReport`
+- Get pending reports count: `getPendingReportsCount`
+
+---
+
+## API Documentation
+
+### 1. Get All Reports
+**Endpoint:** `/reports`
+**Method:** `GET`
+**Description:** Retrieves all reports with filtering options.
+**Query Parameters:**
+- `page`: Number (pagination)
+- `limit`: Number (pagination limit)
+- `reportType`: String (`blog`, `comment`, `user`)
+- `status`: String (`pending`, `resolved`)
+- `blockAuthor`: String (`yes`, `no`)
+
+**Response:**
+```json
+{
+  "reports": [
+    {
+      "_id": "report123",
+      "reportType": "blog",
+      "reason": "spam",
+      "status": "pending",
+      "reportedItem": {
+        "blog_id": "blog456",
+        "title": "Offensive Blog Post",
+        "author": {
+          "username": "offender123",
+          "profile_img": "url"
+        }
+      },
+      "reporter": {
+        "username": "user789",
+        "profile_img": "url"
+      }
+    }
+  ],
+  "total": 10,
+  "page": 1,
+  "totalPages": 2
+}
+```
+
+### 2. Get a Specific Report
+**Endpoint:** `/reports/{reportId}`
+**Method:** `GET`
+**Description:** Retrieves details of a specific report.
+
+**Response:**
+```json
+{
+  "_id": "report123",
+  "reportType": "comment",
+  "reason": "harassment",
+  "status": "pending",
+  "reportedItem": {
+    "comment": "This is offensive content",
+    "commented_by": "userOffender"
+  },
+  "reporter": {
+    "username": "user789"
+  }
+}
+```
+
+### 3. Take Action on a Report
+**Endpoint:** `/reports/{reportId}/action`
+**Method:** `POST`
+**Description:** Performs an administrative action on a report.
+
+**Request Body:**
+```json
+{
+  "action": "delete_blog"
+}
+```
+**Available Actions:**
+- `delete_blog` – Deletes the reported blog.
+- `block_author` – Blocks the author of the content.
+- `resolve` – Marks the report as resolved.
+
+**Response:**
+```json
+{
+  "message": "Action performed successfully"
+}
+```
+
+### 4. Delete a Report
+**Endpoint:** `/reports/{reportId}`
+**Method:** `DELETE`
+**Description:** Deletes a report from the system.
+
+**Response:**
+```json
+{
+  "message": "Report deleted successfully"
+}
+```
+
+### 5. Get Pending Reports Count
+**Endpoint:** `/reports/pending-count`
+**Method:** `GET`
+**Description:** Retrieves the number of pending reports categorized by type.
+
+**Response:**
+```json
+{
+  "blogs": 5,
+  "comments": 3,
+  "users": 2
+}
+```
+
+---
+
+## Conclusion
+The **Admin Reports Management** system ensures that administrators can efficiently handle reports on blogs, comments, and users, maintaining content integrity on the platform. The API endpoints facilitate automation and streamline moderation processes.

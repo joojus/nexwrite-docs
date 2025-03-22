@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Medium Clone",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -22,16 +22,50 @@
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Settings",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
               "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "settings/social-login",
+              "settings/sitemap-seo",
+              "/settings/advertising"
+            ]
+          },
+          {
+            "group": "Blogs",
+            "pages": [
+              "/blogs/blog-management",
+              "/blogs/categories",
+              "/blogs/comments"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "/users/user-management"
+            ]
+          },
+          {
+            "group": "Pages",
+            "pages": [
+              "/pages/page-management"
+            ]
+          },
+          {
+            "group": "Reports",
+            "pages": [
+              "/reports/blogs-reports",
+               "/reports/comments-reports",
+               "/reports/users-reports"
+            ]
+          },
+          {
+            "group": "Menu",
+            "pages": [
+              "/menu/footer-menu"
             ]
           }
+         
+         
         ]
       },
       {
@@ -40,7 +74,20 @@
           {
             "group": "API Documentation",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+              "api-reference/social-login",
+              "api-reference/user-management",
+              "api-reference/categories",
+              "api-reference/blog-management",
+              "api-reference/comments",
+              "api-reference/page-management",
+              "api-reference/footer-menu",
+              "api-reference/sitemap-seo",
+               "api-reference/settings",
+                "api-reference/advertising",
+                "/api-reference/blogs-reports",
+                "/api-reference/comments-reports",
+                "/api-reference/users-reports"
             ]
           },
           {
@@ -65,24 +112,20 @@
           "anchor": "Community",
           "href": "https://mintlify.com/community",
           "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
+       
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@jooj.us"
       }
     ],
     "primary": {
@@ -93,9 +136,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/#",
+      "github": "https://github.com/#",
+      "linkedin": "https://linkedin.com/company/#"
     }
   }
 }

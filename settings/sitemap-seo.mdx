@@ -1,0 +1,81 @@
+---
+title: 'Sitemap and SEO'
+description: 'This section provides details on how to automatically generate a dynamic sitemap.xml and configure robots.txt so that all pages (static pages, blogs, and categories) are indexed by search engines without manual intervention.'
+icon: 'map'
+---
+
+
+
+### 1. Robots.txt Configuration
+Place or update the `robots.txt` file in the root of your public directory with:
+```plaintext
+User-agent: *
+Disallow: /admin/
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+### 2. Search Engine Submission
+Once deployed, verify your sitemap is accessible at `https://yourdomain.com/sitemap.xml`. Submit this URL to Google Search Console, Bing Webmaster Tools, and other search engines.
+
+
+---
+
+## SEO Settings & Title Management
+### This section details the automatic handling of SEO metadata, including dynamic title generation, meta tags, Open Graph, Twitter Card, and favicon settings.
+---
+
+## Key Features
+- **Dynamic Title**: The title can be overridden using the `titleOverride` prop.
+- **Meta Tags**: Meta descriptions, keywords, Open Graph, and Twitter Card tags are set dynamically from stored settings.
+- **Favicon Management**: The favicon is set dynamically based on site settings.
+- **Google Analytics Integration**: If a Google Analytics ID is provided, tracking is included.
+
+---
+
+
+
+## Deployment & Usage
+
+### 1. No Manual Updates Required
+- The `sitemap.xml` is generated dynamically when accessed.
+- New blogs and categories are automatically added.
+
+### 2. Robots.txt Update
+Ensure your `robots.txt` file (placed in the `public` folder or served via a route) includes the correct sitemap URL:
+
+```plaintext
+User-agent: *
+Disallow: /admin/
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+### 3. Submitting to Search Engines
+After deployment, submit your sitemap URL to Google Search Console and Bing Webmaster Tools to improve indexing.
+
+---
+
+## Final Notes
+
+### Dynamic and Flexible
+- The sitemap is always up to date with no manual intervention.
+- Meta tags are generated dynamically per page.
+
+### Comprehensive SEO
+- The **SEO component** ensures structured meta tags.
+- The **automatically generated sitemap** improves search engine indexing and ranking.
+
+<Tip>**Sitemap Automation Tip:** Your `sitemap.xml` is generated dynamically upon each request. Ensure that your `robots.txt` references the correct sitemap URL and submit it to your preferred search engines.</Tip>
+
+---
+
+## Conclusion
+The Sitemap and SEO Management module ensures that all static and dynamic URLs on your site are automatically indexed. Configuring your environment variables and updating the `robots.txt` file guarantees proper SEO optimization without manual updates.
+
+> **Sitemap Automation Tip:** Your `sitemap.xml` is generated dynamically upon each request. Ensure your `robots.txt` references the correct sitemap URL and submit it to search engines.
+
+<Tip>
+Sitemap and SEO
+The API allows dynamic control over Sitemap and SEO processes. More details in the [API Reference](/api-reference/sitemap-seo) section
+</Tip>

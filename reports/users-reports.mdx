@@ -1,0 +1,69 @@
+---
+title: 'User Reports'
+description: 'This section describes the **User Reports** management in the admin panel. Admins can view, filter, and take actions on user reports submitted by platform users.'
+icon: 'user'
+---
+
+
+## User Reports List
+### Endpoint:
+Admins access reports via the **User Reports** page in the admin panel.
+
+### Filters:
+- **Block User** - Filter by whether the reported user is blocked (`yes`, `no`, `all`).
+- **Status** - Filter reports by status (`pending`, `resolved`, `all`).
+
+### Table Structure:
+| Column        | Description |
+|--------------|-------------|
+| Checkbox     | Select multiple reports for bulk actions |
+| User         | Reported user profile (name, username, avatar) |
+| Reason       | Report reason (harassment, spam, AI-generated, etc.) |
+| Reporter     | User who submitted the report |
+| Status       | `pending` or `resolved` |
+| Block User   | Shows whether the user is currently blocked |
+| Actions      | Admin actions (block/unblock, resolve, delete) |
+
+### Actions Available:
+1. **Block/Unblock User** - Toggle block status of the reported user.
+2. **Mark as Resolved** - Change report status to `resolved`.
+3. **Delete Report** - Permanently delete the report entry.
+
+---
+### Admin Panel UI
+1. Navigate to **User Reports** in the admin panel.
+2. The admin can:
+   - View all reported users in a table.
+   - Filter reports by status (pending, resolved) and block user status.
+   - Take actions on reported users (block, delete, mark resolved).
+
+### Features
+- **View Reports**: Displays reported users along with details about the reporter and reason.
+- **Filter Reports**: Allows filtering based on status (`pending`, `resolved`) and block user status (`yes`, `no`).
+- **Take Action**:
+  - **Block User**: Prevents the reported user from posting further content.
+  - **Delete User**: Removes the reported user from the platform.
+  - **Resolve Report**: Marks the report as resolved without taking action.
+
+### Usage Flow
+1. Admin accesses the **User Reports** page.
+2. Admin reviews the reported users with relevant details.
+3. Admin selects an appropriate action:
+   - Blocks the user if violations occur.
+   - Deletes the user account if necessary.
+   - Resolves the report if no action is required.
+4. The system updates the status of the report accordingly.
+
+### Error Handling
+- **Invalid report ID:** Returns `404 Not Found`
+- **Unauthorized request:** Returns `403 Forbidden`
+- **Server errors:** Returns `500 Internal Server Error`
+
+## Conclusion
+The **User Reports Management** system ensures that administrators can efficiently handle reported users, maintaining a safe and compliant environment. The API endpoints allow seamless integration with moderation tools.
+
+<Tip>
+User Reports API Documentation
+The API allows dynamic control over User Reports processes. More details in the [API Reference](/api-reference/users-reports) section.
+</Tip>
+

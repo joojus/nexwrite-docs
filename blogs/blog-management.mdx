@@ -1,0 +1,60 @@
+---
+title: 'Blogs Management'
+description: 'The **Blogs Management** section in the Admin Panel allows administrators to manage blog posts, including listing, searching, deleting, and paginating through blog entries.'
+icon: 'newspaper'
+---
+
+## Overview
+The Blogs Management section allows administrators to oversee and manage blog posts effectively. Administrators can search, filter, view, and delete blog posts to ensure content quality and moderation.
+
+## Features
+- View all published blogs
+- Search blogs by title or description
+- Filter blogs by tags
+- View blog authors and details
+- Delete unwanted or inappropriate blogs
+
+## Steps to Manage Blogs
+
+### 1. Viewing All Blogs
+1. Navigate to **Admin Panel → Blogs-> Blogs Management**.
+2. A table of blogs is displayed with the following columns:
+   - **Banner** – The blog's featured image
+   - **Title** – The blog post title
+   - **Description** – A brief summary of the blog
+   - **Tags** – Categories assigned to the blog
+   - **Actions** – Options to view or delete the blog
+
+### 2. Searching for a Blog
+1. Enter a **title** or **description** keyword in the search bar.
+2. The system will filter the results dynamically based on the input.
+3. Click **Clear** to reset the search.
+
+### 3. Filtering Blogs by Tags
+1. Select a tag from the dropdown filter.
+2. The system will display only blogs associated with the selected tag.
+
+### 4. Deleting a Blog
+1. Locate the blog you want to delete.
+2. Click the **Delete** button next to the blog entry.
+3. Confirm the deletion in the pop-up dialog.
+4. A success message will appear if the blog is successfully deleted.
+
+### Components Used
+- **Table** for displaying blog entries
+- **Pagination** for navigation
+- **Search Input** for filtering blog results
+- **Toast Notifications** for actions (e.g., deletion success/failure)
+
+### State Management
+- **Redux** is used to manage blog state, including fetching, searching, and deleting blogs.
+- **useState** is used for local search and pagination handling.
+
+
+## Conclusion
+The Blogs Management panel ensures seamless administration of blog posts, providing an efficient way to search, filter, and moderate content. The API endpoints facilitate dynamic control over blog operations.
+
+<Tip>
+Blogs Management
+The API allows dynamic control over Blogs Management processes. More details in the [API Reference](/api-reference/blog-management) section
+</Tip>

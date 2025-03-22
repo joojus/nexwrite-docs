@@ -1,0 +1,143 @@
+---
+title: 'API Global Settings'
+description: 'This section provides details on managing global settings, allowing administrators to configure essential site options such as branding, metadata, social links, and SMTP settings.'
+---
+
+## API Documentation
+The backend provides the following API endpoints to manage global settings.
+
+### 1. Fetch Global Settings
+- **Endpoint:** `GET /admin/settings`
+- **Description:** Retrieves the current global settings.
+- **Response:**
+  ```json
+  {
+    "siteName": "My Blog Platform",
+    "siteDescription": "A modern blogging platform",
+    "siteLogoLight": "/uploads/logos/logo-light.png",
+    "siteLogoDark": "/uploads/logos/logo-dark.png",
+    "favicon": "/uploads/logos/favicon.ico",
+    "metaTitle": "My Blog - Home",
+    "metaKeywords": "blog, articles, technology, programming",
+    "metaDescription": "The best platform for sharing your thoughts and ideas.",
+    "googleAnalyticsId": "UA-XXXXX-Y",
+    "socialLinks": {
+      "facebook": "https://facebook.com/myblog",
+      "twitter": "https://twitter.com/myblog",
+      "instagram": "https://instagram.com/myblog",
+      "linkedin": "https://linkedin.com/company/myblog"
+    },
+    "smtpHost": "smtp.gmail.com",
+    "smtpPort": 587,
+    "smtpUsername": "admin@myblog.com"
+  }
+  ```
+
+### 2. Update Global Settings
+- **Endpoint:** `PATCH /admin/settings`
+- **Description:** Updates the global settings.
+- **Request Body:**
+  ```json
+  {
+    "siteName": "Updated Blog Name",
+    "siteDescription": "A new description for my site",
+    "metaTitle": "Updated Meta Title",
+    "metaKeywords": "new, keywords, seo",
+    "metaDescription": "An updated description for better SEO.",
+    "googleAnalyticsId": "UA-XXXXX-Z",
+    "socialLinks": {
+      "facebook": "https://facebook.com/newpage",
+      "twitter": "https://twitter.com/newpage"
+    },
+    "smtpHost": "smtp.newserver.com",
+    "smtpPort": 465,
+    "smtpUsername": "newadmin@myblog.com"
+  }
+  ```
+
+### 3. Upload Site Logo
+- **Endpoint:** `POST /admin/settings/upload-logo`
+- **Description:** Uploads and updates a site logo or favicon.
+- **Request Parameters:**
+  - `file`: The image file to be uploaded (logo or favicon).
+  - `fieldName`: The setting field to update (`siteLogoLight`, `siteLogoDark`, `favicon`).
+- **Response:**
+  ```json
+  {
+    "message": "File successfully uploaded",
+    "fileUrl": "/uploads/logos/new-logo.png"
+  }
+  ```
+
+### 4. Delete Site Logo
+- **Endpoint:** `DELETE /admin/settings/logo`
+- **Description:** Deletes a specific logo or favicon.
+- **Request Body:**
+  ```json
+  {
+    "fieldName": "siteLogoLight"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "message": "Logo deleted successfully"
+  }
+  ```
+
+---
+## Frontend Implementation
+
+### Retrieving Global Settings
+To fetch and display global settings in the admin panel:
+```js
+useEffect(() => {
+  axios.get("/admin/settings", { headers: { Authorization: `Bearer ${token}` } })
+    .then(response => setSettings(response.data))
+    .catch(error => console.error("Error fetching settings:", error));
+}, []);
+```
+
+### Updating Global Settings
+To allow administrators to update global settings:
+```js
+const updateSettings = async () => {
+  try {
+    await axios.patch("/admin/settings", settings, { headers: { Authorization: `Bearer ${token}` } });
+    toast({ title: "Settings saved", description: "Changes have been applied." });
+  } catch (error) {
+    toast({ title: "Error", description: "Failed to update settings." });
+  }
+};
+```
+
+### Uploading a Logo
+To upload a logo and update the corresponding setting:
+```js
+const handleFileUpload = async (event, field) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("logo", file);
+  formData.append("fieldName", field);
+
+  try {
+    const { data } = await axios.post("/admin/settings/upload-logo", formData, {
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+    });
+    setSettings(prev => ({ ...prev, [field]: data.fileUrl }));
+  } catch (error) {
+    console.error("Error uploading logo:", error);
+  }
+};
+```
+
+---
+## Conclusion
+The **Global Settings** module enables administrators to customize key aspects of the site, including branding, SEO metadata, and email configurations. The API endpoints provide seamless integration for frontend management, ensuring an optimized and dynamic user experience.
+
+<Tip>
+To maintain consistency and avoid manual updates, ensure that the **robots.txt** file references the correct sitemap URL and that the SEO metadata is configured properly for optimal indexing.
+</Tip>
+

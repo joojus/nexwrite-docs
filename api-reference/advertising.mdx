@@ -1,0 +1,129 @@
+---
+title: 'Ads API Documentation'
+description: 'The Ads API provides endpoints to manage advertising blocks, including both public and admin-level functionalities.'
+---
+
+## 2. Ads API Documentation
+
+### 2.1 Overview
+The Ads API provides endpoints to manage advertising blocks. The API is split into:
+
+- **Public API** (no authorization required): To fetch a random active ad based on location (and format).
+- **Admin API** (requires authorization): To create, update, and delete ads.
+
+---
+## 2.2 Public API Endpoint
+
+### Fetch a Random Active Ad
+- **Endpoint:** `GET /api/ads`
+- **Query Parameters:**
+  - `location` (**required**): The ad location (e.g., sidebar, homepage).
+  - `format` (*optional*): The banner format (e.g., square or horizontal).
+
+**Example Request:**
+```bash
+GET /api/ads?location=sidebar&format=square
+```
+
+### How It Works
+1. The API queries the database for all active ads with the specified location (and format, if provided).
+2. It then randomly selects one ad from the result:
+   ```js
+   const randomAd = ads[Math.floor(Math.random() * ads.length)];
+   ```
+3. If no ads are found, it returns a `404` error.
+
+### Example Successful Response (JSON):
+```json
+{
+  "_id": "62abc12345def67890ghi123",
+  "title": "Test Ad",
+  "type": "code",
+  "adCode": "<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-format=\"auto\" data-ad-slot=\"1234567890\"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>",
+  "format": "horizontal",
+  "location": "homepage",
+  "active": true,
+  "weight": 1,
+  "createdAt": "2023-02-27T10:00:00.000Z",
+  "updatedAt": "2023-02-27T10:00:00.000Z"
+}
+```
+
+### Error Cases:
+- If the `location` parameter is missing, returns status `400`.
+- If no active ads are found for the specified parameters, returns status `404`.
+
+---
+## 2.3 Admin API Endpoints
+All admin endpoints require authorization (e.g., via JWT).
+
+### 2.3.1 Create Ad
+- **Endpoint:** `POST /admin/ads`
+- **Request Body (FormData):**
+  - `title`: string.
+  - `type`: "image" or "code".
+  - `format`: "square" or "horizontal".
+  - `location`: one of (`sidebar`, `homepage`, `profile`, `category`, `blogs`).
+  - `weight`: number.
+  - If `type === "image"`:
+    - `link`: URL (*optional*).
+    - `adImage`: image file.
+  - If `type === "code"`:
+    - `adCode`: HTML code (e.g., Google AdSense snippet).
+- **Response:** JSON with a success message and the created ad object.
+
+### 2.3.2 Get All Ads
+- **Endpoint:** `GET /admin/ads`
+- **Response:** JSON array of ads.
+
+### 2.3.3 Get Ad by ID
+- **Endpoint:** `GET /admin/ads/:id`
+- **Response:** JSON object of the ad or a `404` error if not found.
+
+### 2.3.4 Update Ad
+- **Endpoint:** `PATCH /admin/ads/:id`
+- **Request Body (FormData):** Same fields as for creating an ad.
+
+#### Special Notes:
+- If a new image file is uploaded, the old image file is deleted.
+- If `imageUrl` is sent as an empty string, the existing image file is deleted.
+- **Response:** JSON with a success message and the updated ad.
+
+### 2.3.5 Delete Ad
+- **Endpoint:** `DELETE /admin/ads/:id`
+- **Response:** JSON with a success message indicating deletion.
+
+---
+## 2.4 Recommendations for Using the API
+
+### Dynamic Ad Rotation
+- On the client side, call the public API with the appropriate `location` (and `format` if needed).
+- Each request will randomly select one ad from the database.
+- For more variation, ensure that there are multiple active ads for the given criteria.
+
+### Integrating "Code" Type Ads (Google AdSense)
+If an ad has `type: "code"`, render its HTML using `dangerouslySetInnerHTML` and call:
+```js
+(window.adsbygoogle = window.adsbygoogle || []).push({});
+```
+This call should be done after the ad block is inserted into the DOM (for example, using a `useEffect` hook in your React component).
+
+---
+## Conclusion
+This documentation covers:
+
+### Admin Panel:
+- How to create, edit, and delete ads using the admin panel.
+- Fields available for ads and how to integrate Google AdSense by entering the ad code in the `adCode` field.
+- How the admin panel conditionally shows the `Link` field (for Image ads) and displays the current image in edit mode.
+
+### API:
+- **Public API** for dynamically fetching ads based on location and format.
+- **Admin API** endpoints for creating, updating, and deleting ads.
+
+### Google AdSense Integration:
+- How to add the `googleAdsenseId` to settings.
+- Dynamically load the AdSense script in your SEO component.
+- Initialize ad blocks in your React components.
+
+Using these guidelines and code samples, you can set up a comprehensive ad management system in your project, including the integration of Google AdSense with dynamic configuration from your settings stored in MongoDB.

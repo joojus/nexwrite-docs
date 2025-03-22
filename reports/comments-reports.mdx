@@ -1,0 +1,42 @@
+---
+title: 'Comment Reports'
+description: 'The **Comment Reports Management** section allows administrators to handle reported comments, review reasons, take actions, and manage content integrity.'
+icon: 'comment-dots'
+---
+
+### Admin Panel UI
+1. Navigate to **Comment Reports** in the admin panel.
+2. The admin can:
+   - View all reported comments in a table.
+   - Filter reports by status (pending, resolved) and author block status.
+   - Take actions on reported comments (delete, block author, mark resolved).
+
+### Features
+- **View Reports**: Displays reported comments along with details about the reporter and reason.
+- **Filter Reports**: Allows filtering based on status (`pending`, `resolved`) and block author status (`yes`, `no`).
+- **Take Action**:
+  - **Delete Comment**: Permanently removes the reported comment.
+  - **Block Author**: Prevents the comment author from posting further content.
+  - **Resolve Report**: Marks the report as resolved without taking action.
+
+### Usage Flow
+1. Admin accesses the **Comment Reports** page.
+2. Admin reviews the reported comments with relevant details.
+3. Admin selects an appropriate action:
+   - Deletes the comment if necessary.
+   - Blocks the author if violations occur.
+   - Resolves the report if no action is required.
+4. The system updates the status of the report accordingly.
+
+### Error Handling
+- **Invalid report ID:** Returns `404 Not Found`
+- **Unauthorized request:** Returns `403 Forbidden`
+- **Server errors:** Returns `500 Internal Server Error`
+
+## Conclusion
+The **Comment Reports Management** system ensures that administrators can efficiently handle reported comments, maintaining content integrity on the platform. The API endpoints streamline moderation and provide a structured approach to handling reports.
+
+<Tip>
+Comment Reportst API Documentation
+The API allows dynamic control over Comment Reports processes. More details in the [API Reference](/api-reference/comments-reports) section
+</Tip>

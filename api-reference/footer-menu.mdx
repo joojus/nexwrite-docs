@@ -1,0 +1,133 @@
+---
+title: 'Footer Menu API'
+description: 'This section provides details on managing the footer menu. Administrators can create, edit, and delete menu links that are displayed in the website footer. The menu supports both internal slugs (e.g., `/about`) and external URLs.'
+---
+
+---
+## API Endpoints
+The backend provides the following endpoints for managing footer menu links.
+
+### Fetch Footer Menu Links
+- **Endpoint:** `GET /admin/footer-menu`
+- **Description:** Retrieves all footer menu links, sorted by their order.
+- **Response:**
+  ```json
+  [
+    {
+      "_id": "menu-id",
+      "label": "About Us",
+      "url": "/about",
+      "order": 1,
+      "isActive": true
+    },
+    {
+      "_id": "menu-id-2",
+      "label": "External Site",
+      "url": "https://example.com",
+      "order": 2,
+      "isActive": false
+    }
+  ]
+  ```
+
+### Create a New Footer Menu Link
+- **Endpoint:** `POST /admin/footer-menu`
+- **Description:** Creates a new footer menu link.
+- **Request Body:**
+  ```json
+  {
+    "label": "Contact",
+    "url": "/contact",
+    "order": 3,
+    "isActive": true
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "_id": "menu-id-3",
+    "label": "Contact",
+    "url": "/contact",
+    "order": 3,
+    "isActive": true
+  }
+  ```
+
+### Update a Footer Menu Link
+- **Endpoint:** `PUT /admin/footer-menu/{id}`
+- **Description:** Updates an existing footer menu link.
+- **Request Body:**
+  ```json
+  {
+    "label": "New Label",
+    "url": "/new-slug",
+    "order": 1,
+    "isActive": false
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "_id": "menu-id",
+    "label": "New Label",
+    "url": "/new-slug",
+    "order": 1,
+    "isActive": false
+  }
+  ```
+
+### Delete a Footer Menu Link
+- **Endpoint:** `DELETE /admin/footer-menu/{id}`
+- **Description:** Deletes a footer menu link permanently.
+- **Response:**
+  ```json
+  {
+    "message": "Footer menu link deleted successfully"
+  }
+  ```
+
+---
+## Frontend Implementation
+
+### Displaying the Footer Menu
+To fetch and display footer menu links:
+```jsx
+useEffect(() => {
+  axios.get(`${import.meta.env.VITE_BASE_URL}/admin/footer-menu`)
+    .then(response => setLinks(response.data))
+    .catch(error => console.error("Error fetching footer links", error));
+}, []);
+```
+
+### Creating or Editing a Link
+```jsx
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const method = editingId ? "put" : "post";
+  const url = editingId ? `/admin/footer-menu/${editingId}` : "/admin/footer-menu";
+  
+  await axios[method](`${import.meta.env.VITE_BASE_URL}${url}`, form)
+    .then(() => {
+      setForm({ label: "", url: "", order: 0, isActive: true });
+      setEditingId(null);
+      fetchLinks();
+    })
+    .catch(error => console.error("Error saving footer link", error));
+};
+```
+
+### Active/Inactive Status Display
+```jsx
+<div className="flex items-center space-x-2">
+  {link.isActive ? (
+    <span className="text-green-600 font-medium">Active</span>
+  ) : (
+    <span className="text-red-500 font-medium">Inactive</span>
+  )}
+</div>
+```
+
+---
+## Conclusion
+The **Footer Menu Management** system allows full control over website footer links. Administrators can dynamically update, add, and remove links, ensuring seamless navigation for users. Internal and external links are supported, and visibility can be controlled via the `isActive` flag.
+

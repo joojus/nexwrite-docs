@@ -1,0 +1,40 @@
+---
+title: 'Blog Reports'
+description: 'The **Admin Reports Management** section allows administrators to manage reports related to blogs, users, and comments. Admins can review reports, take actions, and ensure content compliance.'
+icon: 'newspaper'
+---
+
+### Admin Panel UI
+1. Navigate to **Reports** in the admin panel.
+2. The admin can:
+   - View all reported blogs, comments, and users.
+   - Filter reports based on status and actions.
+   - Take actions such as resolving reports, deleting content, or blocking users.
+   
+### Features
+- **View Reports**: Displays all reports with details about the reported content, reporter, and reason.
+- **Filter Reports**: Allows filtering by report type (blog, comment, user), status (pending, resolved), and author block status.
+- **Take Action**:
+  - **Delete Blog**: Permanently removes the reported blog.
+  - **Block Author**: Restricts the reported user from posting further content.
+  - **Resolve Report**: Marks the report as resolved without further action.
+
+### Usage Flow
+1. Admin accesses the **Reports Management** page.
+2. Admin reviews reported content with details.
+3. Admin selects an action:
+   - If the report is valid, admin deletes the content or blocks the user.
+   - If no violation is found, the report is marked as resolved.
+4. Changes are reflected in real time.
+
+### Error Handling
+- **Invalid report ID:** Returns `404 Not Found`
+- **Unauthorized request:** Returns `403 Forbidden`
+- **Server errors:** Returns `500 Internal Server Error`
+
+## Conclusion
+The **Admin Reports Management** system ensures that administrators can efficiently handle reports on blogs, comments, and users, maintaining content integrity on the platform. The API endpoints facilitate automation and streamline moderation processes.
+
+<Tip>
+For a complete overview of report handling, refer to the  [API Reference](/api-reference/blogs-reports).
+</Tip>

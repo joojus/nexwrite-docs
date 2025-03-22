@@ -1,0 +1,133 @@
+---
+title: 'API Blogs Management'
+description: 'This section provides details on managing blog categories, allowing administrators and users to organize content effectively. Categories help classify blog posts and make navigation easier'
+---
+
+
+### API Calls
+- Fetch paginated blogs: `fetchPaginatedBlogs`
+- Fetch total blog count: `fetchTotalBlogs`
+- Search blogs: `searchBlogs`
+- Search blogs count: `searchBlogsCount`
+- Delete a blog: `handleDelete`
+
+---
+
+## API Documentation
+
+### 1. Get Paginated Blogs
+**Endpoint:** `/blog/latest-blogs`
+**Method:** `POST`
+**Description:** Retrieves a paginated list of blogs.
+**Request Body:**
+```json
+{
+  "page": 1,
+  "limit": 3
+}
+```
+**Response:**
+```json
+{
+  "blogs": [
+    {
+      "blog_id": "abc123",
+      "title": "Sample Blog",
+      "des": "This is a sample blog description.",
+      "banner": "image_url",
+      "tags": ["Tech", "News"],
+      "publishedAt": "2024-02-01T10:00:00Z"
+    }
+  ],
+  "totalDocs": 100
+}
+```
+
+### 2. Get Total Blog Count
+**Endpoint:** `/blog/all-latest-blogs-count`
+**Method:** `POST`
+**Description:** Retrieves the total count of blogs.
+**Response:**
+```json
+{
+  "totalDocs": 50
+}
+```
+
+### 3. Search Blogs
+**Endpoint:** `/blog/search`
+**Method:** `POST`
+**Description:** Searches blogs by title or description.
+**Request Body:**
+```json
+{
+  "query": "React",
+  "page": 1,
+  "limit": 3
+}
+```
+**Response:**
+```json
+{
+  "blogs": [...],
+  "totalDocs": 10
+}
+```
+
+### 4. Delete a Blog
+**Endpoint:** `/blog/delete`
+**Method:** `POST`
+**Description:** Deletes a blog by its `blog_id`.
+**Request Body:**
+```json
+{
+  "blog_id": "12345"
+}
+```
+**Response:**
+```json
+{
+  "message": "Blog deleted successfully"
+}
+```
+
+### 5. Get Blog Details
+**Endpoint:** `/blog/details`
+**Method:** `POST`
+**Description:** Retrieves details of a single blog.
+**Request Body:**
+```json
+{
+  "blog_id": "12345"
+}
+```
+**Response:**
+```json
+{
+  "title": "My Blog Title",
+  "description": "This is a blog post.",
+  "content": "Lorem ipsum...",
+  "author": "John Doe"
+}
+```
+
+---
+
+## Usage Flow
+1. The admin accesses the **Blogs Management** page.
+2. The component fetches paginated blog data from `/blog/latest-blogs`.
+3. The admin can **search** for blogs by entering a query.
+4. The admin can **delete** a blog by clicking the delete button, triggering a request to `/blog/delete`.
+5. A **toast notification** confirms success or failure of deletion.
+
+---
+
+## Error Handling
+- **Invalid blog ID:** Returns `404 Not Found`
+- **Unauthorized request:** Returns `403 Forbidden`
+- **Server errors:** Returns `500 Internal Server Error`
+
+---
+
+## Conclusion
+The Blogs Management panel ensures seamless administration of blog posts, providing an efficient way to search, filter, and moderate content. The API endpoints facilitate dynamic control over blog operations.

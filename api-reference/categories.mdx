@@ -1,0 +1,70 @@
+---
+title: 'Blog Categories'
+description: 'This section provides details on managing blog categories, allowing administrators and users to organize content effectively. Categories help classify blog posts and make navigation easier'
+---
+
+## API Endpoints
+
+The backend provides the following endpoints for managing categories:
+
+### Fetch Categories
+- **Endpoint:** `GET /categories`
+- **Description:** Retrieves the list of all categories.
+- **Response:**
+  ```json
+  [
+    {
+      "_id": "category-id",
+      "name": "Technology",
+      "description": "Posts related to technology",
+      "parent": null
+    }
+  ]
+  ```
+
+### Create Category
+- **Endpoint:** `POST /categories`
+- **Description:** Creates a new category.
+- **Request Body:**
+  ```json
+  {
+    "name": "Business",
+    "description": "Business-related posts",
+    "parent": "parent-category-id"
+  }
+  ```
+
+### Update Category
+- **Endpoint:** `PUT /categories/{id}`
+- **Description:** Updates an existing category.
+- **Request Body:**
+  ```json
+  {
+    "name": "Updated Name",
+    "description": "Updated description"
+  }
+  ```
+
+### Delete Category
+- **Endpoint:** `DELETE /categories/{id}`
+- **Description:** Deletes a category and reassigns related blog posts.
+
+## Auto-Generated Categories from User Tags
+- Users can assign tags to blog posts.
+- If a tag matches an existing category, it is linked automatically.
+- If a tag does not match any existing category, it is grouped under **Other**.
+- Administrators can later create a proper category and reassign posts.
+
+## Frontend Implementation
+
+In the blog creation form, users can select an existing category or enter a new tag. The system processes the input and either assigns it to an existing category or places it under **Other**.
+
+```jsx
+{categories.map((category) => (
+  <option key={category._id} value={category._id}>{category.name}</option>
+))}
+```
+
+## Conclusion
+The category management system ensures efficient content organization and user-friendly navigation. Administrators maintain control over available categories, while users contribute dynamically through tags.
+
