@@ -17,8 +17,19 @@
             "group": "Get Started",
             "pages": [
               "introduction",
-              "quickstart",
-              "development"
+              "get-started/get-nexwrite",
+              "get-started/file-structure",
+              "get-started/server-requirements",
+              {
+                "group": "Installation",
+                "pages": [
+                  "get-started/installation",
+                  "get-started/installation/local",
+                  "get-started/installation/paas",
+                  "get-started/installation/troubleshooting"
+                ]
+              },
+              "get-started/initial-setup"
             ]
           },
           {
@@ -89,28 +100,21 @@
                 "/api-reference/comments-reports",
                 "/api-reference/users-reports"
             ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
-            ]
           }
+         
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Official website",
+          "href": "https://jooj.us/",
+          "icon": "globe"
         },
         {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
+          "anchor": "Demo NewWrite",
+          "href": "https://nexwrite.jooj.us",
           "icon": "slack"
         }
        
@@ -130,8 +134,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Buy Now",
+      "href": "https://buy.jooj.us"
     }
   },
   "footer": {

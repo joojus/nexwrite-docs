@@ -1,0 +1,176 @@
+---
+title: VPS or Dedicated Server
+description: A complete guide to installing the NexWrite - Medium-style blogging platform script on your VPS or dedicated server, including setup, license activation, and database configuration.
+---
+
+Welcome to the NexWrite - Medium-style blogging platform VPS Installation Guide. This step-by-step tutorial is designed to help you install and configure the script on a VPS or dedicated server.
+
+<Note>
+  This guide is for users with VPS or dedicated servers. If you are using a shared host or local environment, check the relevant installation guides.
+</Note>
+
+## Prerequisites
+
+Ensure your server meets the [server requirements](/get-started/server-requirements). You will need:
+
+- A clean VPS or dedicated server (Ubuntu 20.04+ recommended)
+- Root or sudo access
+- A domain name pointed to your server's IP
+- Node.js (v18+), MongoDB (or MongoDB Atlas), and Nginx (recommended)
+
+## Step 1: Prepare Your Server
+
+1. **Connect via SSH:**
+```bash
+ssh root@your-server-ip
+```
+
+2. **Install Node.js:**
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+sudo apt install -y nodejs
+```
+
+3. **Install MongoDB (optional if using Atlas):**
+```bash
+sudo apt install -y mongodb
+```
+
+4. **Install PM2 process manager:**
+```bash
+npm install -g pm2
+```
+
+5. **Install Nginx (optional, for HTTPS and proxying):**
+```bash
+sudo apt install nginx
+```
+
+## Step 2: Upload, Extract & Install Dependencies
+
+1. Upload your script files via SFTP or SCP:
+```bash
+scp nexwrite-server-files.zip root@your-server-ip:/var/www/medium-clone
+```
+
+2. Extract the archive:
+```bash
+cd /var/www/medium-clone
+unzip nexwrite-server-files.zip
+```
+
+3. Install backend dependencies:
+```bash
+npm install
+```
+
+4. Ensure the public files are accessible via domain:
+```bash
+sudo nano /etc/nginx/sites-available/yourdomain.com
+```
+Point root to:
+```nginx
+root /var/www/medium-clone/public;
+```
+
+<Note>
+  Restart Nginx after editing:
+```bash
+sudo systemctl restart nginx
+```
+</Note>
+
+## Step 3: Installation via Web Wizard
+
+Once files are uploaded and dependencies are installed, open your browser:
+
+```txt
+https://yourdomain.com/install
+```
+
+<Steps>
+<Step title="License Activation">
+- Enter your license key.
+- If you don’t know it, go to [https://license.jooj.us](https://license.jooj.us/) and log in with your purchase email.
+</Step>
+
+<Step title="Database Configuration">
+- Enter your MongoDB connection URI. You can use either:
+
+**A. MongoDB Atlas (cloud database)**
+
+Example:
+```bash
+mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
+```
+(Replace `<username>`, `<password>`, `<cluster>`, and `<database>` with your actual values.)
+
+If you are using MongoDB Atlas, you can find your connection string in your Atlas dashboard under **Database > Connect > Drivers**.
+
+**B. Self-hosted MongoDB on VPS (local MongoDB)**
+
+Example:
+```bash
+mongodb://<username>:<password>@<your-server-ip>:27017/<database>
+```
+(Replace `<your-server-ip>` with your VPS IP address and `<database>` with your database name.)
+
+You will also be asked to enter a **JWT secret key**. You can either paste your own or click **Generate** to auto-generate one securely.
+</Step>
+
+<Step title="Create Admin">
+- Set your full name, email, username, and password for the administrator account.
+- Once saved, the server will restart automatically.
+</Step>
+</Steps>
+
+## Step 4: Running the Script
+
+1. Ensure you're in the project directory:
+```bash
+cd /var/www/medium-clone
+```
+
+2. Start the server using PM2:
+```bash
+pm2 start server.js --name="medium-clone"
+```
+
+3. Enable auto-start on reboot:
+```bash
+pm2 startup
+pm2 save
+```
+
+Your project is now running in the background.
+
+## Recommended VPS Providers
+
+We suggest the following VPS providers for stable hosting:
+
+- [DigitalOcean](https://m.do.co/c/084136521a6a) — Easy setup and $200 in free credits
+- [Vultr](https://www.vultr.com/?ref=9690154) — Great for small deployments
+- [Hetzner](https://www.hetzner.com/) — Budget-friendly, powerful servers
+- [Contabo](https://contabo.com) — Affordable and large storage
+- [AWS EC2](https://aws.amazon.com/) — Enterprise-grade flexibility
+
+<Note>
+  For best results, choose a VPS with at least **2GB RAM and 1 vCPU**.
+</Note>
+
+## After Installation
+
+- Your admin dashboard will be available at:
+```txt
+https://yourdomain.com
+```
+- You can now log in using the admin credentials created during the installation.
+
+<Tip>
+  Make sure your SSL certificate is active. You can use [Let's Encrypt](https://letsencrypt.org/) or purchase one from your domain provider.
+</Tip>
+
+---
+
+If you encounter issues, refer to the [Troubleshooting Guide](/get-started/installation/troubleshooting) or contact [support@jooj.us](mailto:support@jooj.us).
+

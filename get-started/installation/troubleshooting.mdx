@@ -1,0 +1,164 @@
+---
+title: Installation Troubleshooting
+sidebarTitle: Troubleshooting
+description: Resolve common issues encountered during the NexWrite installation process on VPS, PaaS, or localhost with this comprehensive troubleshooting guide.
+---
+
+If you're experiencing difficulties during the NexWrite installation or deployment process, this guide will help you identify and fix common issues. Below you'll find error categories with detailed solutions.
+
+## Before You Begin
+
+Before diving into specific problems, ensure the following:
+
+1. Your system meets all [server requirements](/get-started/server-requirements).
+2. You’re using the **latest version** of the NexWrite ZIP archive.
+3. You’ve followed the appropriate installation guide for your environment:  
+   [VPS](/get-started/installation), [PaaS](/get-started/installation/paas), or [Localhost](/get-started/installation/local).
+
+---
+
+## Common Issues and Solutions
+
+<AccordionGroup>
+
+<Accordion title="404 Error at /install or Blank Page">
+If you open `/install` and get a 404 error or a blank screen:
+
+1. **Check Nginx or hosting config**: Make sure your Nginx (or other proxy) is pointing to the `public` folder inside your project:
+   ```nginx
+   root /var/www/medium-clone/public;
+   ```
+
+2. **Verify that files are extracted**: Ensure the script archive was fully extracted and no files are missing.
+
+3. **Wrong working directory**: Make sure you’re running the server from the project root (`/var/www/medium-clone`).
+</Accordion>
+
+<Accordion title="MongoDB Connection Errors">
+If you get a "MongoError" or "Failed to connect to MongoDB" message:
+
+1. **Incorrect URI**: Double-check your MongoDB connection string. Examples:
+   - MongoDB Atlas:
+     ```bash
+     mongodb+srv://user:pass@cluster.mongodb.net/dbname
+     ```
+   - Local MongoDB:
+     ```bash
+     mongodb://localhost:27017/dbname
+     ```
+
+2. **IP Whitelist (Atlas only)**: Ensure your server IP is added to the **Network Access** in MongoDB Atlas.
+
+3. **Authentication failure**: Make sure the username and password used in your URI match the user created in your MongoDB instance.
+
+4. **Firewall or port issue**: If self-hosted, ensure port **27017** is open.
+</Accordion>
+
+<Accordion title="Installation Wizard Fails or Doesn't Load">
+If the `/install` page fails to load, shows a spinner forever, or crashes:
+
+1. **Check server logs**:
+   ```bash
+   pm2 logs
+   ```
+
+2. **Missing .env or config issues**: During installation, no `.env` file is required — all variables are created automatically. Do **not** attempt to preconfigure `.env`.
+
+3. **Browser cache**: Clear the browser cache or try opening `/install` in incognito mode.
+
+4. **SSL misconfig**: If using HTTPS, verify your SSL certificate and redirect rules (especially with Nginx or Cloudflare).
+</Accordion>
+
+<Accordion title="Server Crashes or Restarts on Its Own">
+If the Node.js server crashes after install or mid-use:
+
+1. **Check PM2 logs**:
+   ```bash
+   pm2 logs medium-clone
+   ```
+
+2. **Uncaught exceptions**: Common causes include:
+   - Wrong JWT secret (rare if set through the wizard)
+   - Invalid MongoDB connection
+   - Out-of-memory issues on small VPS (upgrade to at least 2GB RAM)
+
+3. **Fix file permission issues**:
+   ```bash
+   chown -R www-data:www-data /var/www/medium-clone
+   ```
+
+4. **Restart PM2 properly**:
+   ```bash
+   pm2 restart medium-clone
+   ```
+</Accordion>
+
+<Accordion title="Admin Login Not Working After Setup">
+If you’ve completed setup but can’t log in:
+
+1. **Wrong credentials**: Double-check spelling, case sensitivity, and extra spaces.
+
+2. **MongoDB write failure**: If the admin account wasn’t saved to the database, it's usually a connection issue. Revisit `/install`.
+
+3. **Browser autofill conflict**: Clear your browser autofill data or try from incognito mode.
+
+4. **Try resetting via Mongo CLI**:
+   If you're advanced, log into MongoDB and reset the admin user manually (available upon request via support).
+
+5. **Admin panel features not showing**: If you log in but don’t see all admin features (e.g., missing menus or buttons), it may be caused by an expired or invalid token. Simply **log out and log back in** — this will refresh your session and restore full access to the admin interface.
+</Accordion>
+
+<Accordion title="500 Internal Server Error or App Not Responding">
+1. **Check PM2 logs**:
+   ```bash
+   pm2 logs medium-clone
+   ```
+
+2. **Static files not found**:
+   NexWrite ships with a prebuilt frontend. If you see static file errors, ensure the contents of the `client/build` or embedded React build are present inside the `public` folder. You should not need to rebuild anything.
+
+3. **Insufficient resources**: VPS must have **at least 2GB RAM**. Use `htop` or `top` to monitor memory usage.
+
+4. **Port already in use**:
+   Make sure no other service (e.g., previous Node process) is running on the same port.
+</Accordion>
+
+</AccordionGroup>
+
+---
+
+## Additional Debugging Tips
+
+1. **Always check PM2 logs**:
+   ```bash
+   pm2 logs
+   ```
+
+2. **If using Nginx**, check:
+   ```bash
+   sudo cat /var/log/nginx/error.log
+   ```
+
+3. **Inspect your MongoDB connection separately** using a tool like **MongoDB Compass**.
+
+4. **Verify SSL and HTTPS redirect rules** are correctly set up if you enabled HTTPS.
+
+---
+
+## Getting Further Help
+
+If you're still facing issues:
+
+1. Collect the following information:
+   - Error logs (`pm2 logs`, Nginx logs)
+   - VPS specs (RAM, OS version)
+   - Steps to reproduce the error
+   - Screenshot or full error message
+
+2. Contact our support team:  
+   📩 **[support@jooj.us](mailto:support@jooj.us)**
+
+<Note>
+Most issues are solved by checking the logs and carefully reviewing each step of the installation. If something fails, don’t panic — 90% of problems are minor misconfigurations or missing steps.
+</Note>
+

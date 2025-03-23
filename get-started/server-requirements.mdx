@@ -1,0 +1,118 @@
+---
+title: Server Requirements
+description: Ensure your server meets these requirements for a smooth installation and operation of your React + Node.js Medium Clone.
+---
+
+Welcome to the Server Requirements guide for the Medium Clone Script (React + Node.js). This guide outlines the essential server specifications and hosting options to ensure a successful deployment. Whether you're a developer or launching your own SaaS platform, this checklist will help you prepare your environment.
+<Warning>
+ **Important:** To run this script, you must have a **VPS or a dedicated server**. Shared hosting is not supported.
+</Warning>
+## Core Requirements
+
+### Runtime Versions
+
+Your server must support the following runtime environments:
+
+<CardGroup cols={2}>
+  <Card title="Node.js Version" icon="node">
+    18.x or later
+  </Card>
+  <Card title="MongoDB Version" icon="database">
+    6.0 or later
+  </Card>
+</CardGroup>
+
+<Note>
+  Using the latest LTS (Long Term Support) versions of Node.js and MongoDB ensures the best performance, security, and compatibility.
+</Note>
+
+## Minimum Server Specifications
+
+For optimal performance in production:
+
+<CardGroup cols={2}>
+  <Card title="Memory" icon="memory">
+    2 GB RAM minimum (4 GB recommended)
+  </Card>
+  <Card title="CPU" icon="microchip">
+    2 vCPUs or more
+  </Card>
+</CardGroup>
+
+<Note>
+  Our test environment uses a 4 GB RAM / 2 vCPU VPS on Hetzner, which runs smoothly for medium traffic.
+</Note>
+
+## Hosting Recommendations
+
+You can deploy this script on a variety of environments:
+
+### Recommended VPS Providers
+
+- [DigitalOcean](https://m.do.co/c/084136521a6a) — great performance, easy setup
+- [Vultr](https://www.vultr.com/?ref=9690154) — budget-friendly and flexible
+- [Hetzner](https://www.hetzner.com/) — powerful servers at competitive prices
+- [Linode](https://www.linode.com/) — developer-friendly platform
+- [Amazon EC2 (AWS)](https://aws.amazon.com/ec2/) — scalable cloud infrastructure
+
+<Warning>
+  Shared hosting is not supported, as it doesn't provide Node.js or MongoDB runtime environments. Use VPS or cloud platforms.
+</Warning>
+
+### Optional: PaaS (Platform as a Service)
+
+- [Render](https://render.com/)
+- [Railway](https://railway.app/)
+- [Heroku](https://heroku.com/) (Note: Free tier deprecated)
+
+<Tip>
+  For databases, you can either host MongoDB locally or use managed services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+</Tip>
+
+## Additional Requirements
+
+- **HTTPS Support**: SSL is required for production (can use Let's Encrypt)
+- **Environment Variables**: Make sure to configure `.env` with all required keys
+- **Node.js Package Manager**: `npm` or `yarn`
+- **PM2 or systemd** (recommended for background service management)
+
+## Firewall and Ports
+
+Make sure the following ports are open on your server:
+
+- **3000**: React frontend (during development)
+- **5000**: Node.js backend (production may vary)
+- **443 / 80**: HTTPS / HTTP traffic
+- **27017**: MongoDB (if remote access is needed)
+
+<Note>
+  If you use Docker, ports can be mapped accordingly. Firewall rules should be set via UFW or provider dashboard.
+</Note>
+
+## Web Server Compatibility
+
+The app can run with or without a reverse proxy, but using Nginx is recommended for production.
+
+<CardGroup cols={2}>
+  <Card title="Nginx" icon="server">
+    Recommended reverse proxy
+  </Card>
+  <Card title="Apache" icon="server">
+    Not recommended unless using as a static proxy only
+  </Card>
+</CardGroup>
+
+<Tip>
+  With Nginx, you can handle HTTPS, caching, and compression. See our deployment docs for configuration samples.
+</Tip>
+
+## Next Steps
+
+Once your server meets these requirements, proceed to the installation guide:
+
+<Card title="Installation Guide" icon="rocket" href="/get-started/installation">
+  Learn how to install and configure the script on your server.
+</Card>
+
+If you need help, feel free to reach out to our support team.
+

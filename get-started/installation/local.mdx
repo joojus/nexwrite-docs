@@ -1,0 +1,125 @@
+---
+title: Install on Localhost
+description: A complete guide to installing the NexWrite - Medium-style blogging platform script on your local machine, including setup, license activation, and database configuration.
+---
+
+
+
+Welcome to the NexWrite -  Medium-style blogging platform Localhost Installation Guide. This step-by-step tutorial helps you install and configure the script on your local machine for development and testing.
+
+<Note>
+  This guide is for local installations. If you are deploying on a VPS or dedicated server, please refer to the corresponding guides.
+</Note>
+
+## Prerequisites
+
+Ensure your system meets the [server requirements](/get-started/server-requirements). You will need:
+
+- A computer running Windows, macOS, or Linux
+- Node.js (v18+ recommended)
+- MongoDB installed locally (or access to a remote MongoDB instance)
+- A modern web browser
+
+## Step 1: Prepare Your Environment
+
+1. **Download the Script Archive**  
+   After purchase, download the ZIP archive containing the script files from your account or email.
+
+2. **Extract the Archive**  
+   Unzip the archive to your desired location:
+   
+   <CodeBlock language="bash">
+   unzip nexwrite-server-files.zip -d /path/to/medium-clone
+   </CodeBlock>
+
+## Step 2: Install Backend Dependencies
+
+Open a terminal, navigate to the extracted folder, and run:
+
+<CodeBlock language="bash">
+cd /path/to/medium-clone
+npm install
+</CodeBlock>
+
+## Step 3: Start the Server
+
+1. **Launch the Application**  
+   Start the server by running:
+
+   <CodeBlock language="bash">
+   npm start
+   </CodeBlock>
+   
+   The server will run on your localhost (typically at [http://localhost:3000](http://localhost:3000)).
+
+2. **Verify the Server is Running**  
+   Open your browser and navigate to:
+   
+   <CodeBlock language="txt">
+   http://localhost:3000
+   </CodeBlock>
+   
+   You should see your application's homepage.
+
+## Step 4: Complete Installation via Web Wizard
+Once files are installed and dependencies are set up, open your browser and go to:
+
+<CodeBlock language="txt">
+http://localhost:3000/install
+</CodeBlock>
+<Steps>
+  <Step title="License Activation">
+    - Enter your license key.  
+    - If you don’t know it, go to [https://license.jooj.us](https://license.jooj.us/) and log in with your purchase email.
+  </Step>
+
+  <Step title="Database Configuration">
+    - Enter your MongoDB connection URI. You can use either:
+      
+      **A. MongoDB Atlas (cloud database)**
+      
+      ```bash
+      mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
+      ```
+      *(Replace `<username>`, `<password>`, `<cluster>`, and `<database>` with your actual values.)*
+      
+      **B. Local MongoDB Installation**
+      
+     ```bash
+      mongodb://localhost:27017/your-database-name
+         ```
+      *(Replace `your-database-name` with your desired database name.)*
+      
+    - Enter your **JWT secret key** by either pasting your own or clicking **Generate** to auto-generate one securely.
+  </Step>
+
+
+  <Step title="Create Admin">
+    - Set your full name, email, username, and password for the administrator account.  
+    - Once saved, the server will restart automatically.
+  </Step>
+</Steps>
+
+## Step 5: Running the Script
+
+After installation is complete:
+
+1. **Access Your Application**  
+   Open your browser and navigate to:
+   
+   <CodeBlock language="txt">
+   http://localhost:3000
+   </CodeBlock>
+   
+   Log in using the administrator credentials you created.
+
+<Tip>
+  For efficient development, consider installing **nodemon** to automatically restart the server on code changes:
+  
+  <CodeBlock language="bash">
+  npm install -g nodemon
+  nodemon server.js
+  </CodeBlock>
+</Tip>
+
+If you encounter issues, please refer to the [Troubleshooting Guide](/get-started/installation/troubleshooting) or contact [support@jooj.us](mailto:support@jooj.us).

@@ -1,0 +1,109 @@
+---
+title: Post-Installation Setup
+sidebarTitle: Initial Setup
+description: Learn how to access the admin panel, configure global site settings, and enable features like social login after installing NexWrite.
+---
+
+After successfully installing NexWrite, this guide will walk you through the initial setup process inside the admin panel. You'll learn how to access admin tools, update site branding, and configure essential options such as SEO, SMTP, and social login.
+
+## Accessing the Admin Panel
+
+To access the admin panel:
+
+### Option 1: Sign in as Admin
+1. Go to your live domain and visit:
+   ```
+   https://yourdomain.com/signin
+   ```
+2. Log in using the administrator credentials you created during installation.
+3. Once logged in, click the **Admin Panel** button in the top navigation bar (visible to admin users only).
+
+### Option 2: Direct URL
+Simply visit:
+```
+https://yourdomain.com/admin
+```
+This URL will redirect you to the admin interface if you are authenticated.
+
+<Note>
+If you've just installed the script and some admin features are missing or not loading, **log out and log back in**. This refreshes your session and ensures all admin permissions are properly applied.
+</Note>
+
+---
+
+## Navigating to Settings
+
+After logging in, navigate to:
+```
+Admin Panel → Settings
+```
+This section allows you to manage every global setting of your platform.
+
+### Key Sections Available:
+
+#### General Settings
+- Site Name
+- Site Description
+- Logos: light/dark versions for both full-size and square icons
+- Favicon (browser tab icon)
+
+#### SEO & Metadata
+- Meta title, keywords, and description
+- Google Analytics ID
+- Google AdSense ID
+
+#### Social Links
+- Add links for Facebook, Twitter, Instagram, and LinkedIn
+
+#### Contact Information
+- Business Name
+- Support Email
+- Contact Phone
+- Business Address
+
+#### SMTP Email Settings
+- SMTP Host (e.g., smtp.gmail.com)
+- SMTP Port (e.g., 587)
+- SMTP Username & Password
+
+These settings enable features like password recovery, email notifications, and contact forms.
+
+---
+
+## Enabling Social Login
+
+To enable social logins like Google or Facebook:
+
+1. Navigate to:
+   ```
+   Admin Panel → Settings -> Social Login
+   ```
+
+2. You'll see options to enter API keys and secrets for each provider.
+
+3. Follow the provider-specific guides to register your app:
+   - [Google OAuth Setup](https://console.developers.google.com/)
+   - [Facebook App Setup](https://developers.facebook.com/)
+
+4. After saving the credentials, the login buttons will appear automatically on the sign-in and registration pages.
+
+<Note>
+Make sure your app URLs and redirect URIs are correctly set up in the provider’s developer console.
+</Note>
+
+---
+
+## Final Notes
+
+After completing your initial setup:
+
+- Your site branding and SEO metadata will be applied.
+- Email functionality will work if SMTP is configured.
+- Social login buttons will be active (if enabled).
+
+<Tip>
+Regularly revisit the Settings panel to update your branding, track analytics, or rotate SMTP credentials.
+</Tip>
+
+If you run into issues, check the [Troubleshooting Guide](/get-started/installation/troubleshooting) or contact [support@jooj.us](mailto:support@jooj.us).
+
