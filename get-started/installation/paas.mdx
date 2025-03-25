@@ -6,109 +6,99 @@ description: A complete guide to deploying the NexWrite - Medium-style blogging 
 Welcome to the NexWrite PaaS Deployment Guide. This step-by-step tutorial will help you deploy and configure the NexWrite script on popular Platform-as-a-Service (PaaS) providers such as **Render**, **Railway**, and **Heroku**.
 
 <Note>
-  This guide is for users deploying the script on PaaS platforms using a ZIP archive. If your script is not hosted on GitHub, follow the instructions below for manual deployment.
+This guide assumes that your script is uploaded to a **private GitHub repository**. This is the recommended method to deploy on Render, Railway, and Heroku.
 </Note>
+
+---
 
 ## Prerequisites
 
 Before proceeding, make sure you have:
 
-- The **NexWrite** script as a ZIP archive (provided after purchase)
+- A **private GitHub repository** with the **NexWrite** script uploaded (unzip and push it to GitHub)
 - An account on one of the supported PaaS platforms: **Render**, **Railway**, or **Heroku**
 - **Node.js** version 18 or later
 - A **MongoDB** database (e.g., via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
 - Your **NexWrite license key**
-- Basic knowledge of working in the command line
+- Basic knowledge of working with Git and the terminal
 
 ---
 
-## Step 1: Upload Your Script to the Platform
+## Step 1: Upload Your Script to GitHub
 
-Since the script is not hosted on GitHub, you’ll manually upload it to your chosen platform.
+1. Unzip the NexWrite archive.
+2. Push the contents to a new **private GitHub repository**:
+
+<CodeBlock language="bash">
+git init
+git remote add origin https://github.com/your-username/your-private-repo.git
+git add .
+git commit -m "Initial commit for NexWrite"
+git push -u origin master
+</CodeBlock>
+
+<Note>
+Make sure your GitHub repository is private if you're distributing commercial code.
+</Note>
+
+---
+
+## Step 2: Connect GitHub to Your PaaS Provider
 
 ### 📦 Render
 
 1. Go to your [Render dashboard](https://dashboard.render.com/).
 2. Click **New +** → **Web Service**.
-3. Choose **Manual Deploy**.
-4. Upload your **NexWrite ZIP archive**.
-5. Once uploaded, Render will unpack the archive and initialize the project.
+3. Choose **Deploy from GitHub** and connect your GitHub account.
+4. Select your **NexWrite private repo**.
+5. Set the following values:
+   - **Environment**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+6. Click **Advanced** and add the following environment variables (optional — can also be entered during installation):
+   - `LICENSE_KEY`
+   - `DOMAIN`
+   - `MONGO_DB_URI`
+   - `JWT_SECRET`
+7. Click **Create Web Service** to deploy.
 
 ### 🚆 Railway
 
 1. Visit [railway.app](https://railway.app) and log in.
-2. Click **New Project** → Select **Deploy from ZIP archive**.
-3. Upload your NexWrite ZIP file and follow the setup wizard.
+2. Click **New Project** → **Deploy from GitHub Repo**.
+3. Select your NexWrite repository.
+4. Add environment variables (optional — handled during install):
+   - `LICENSE_KEY`
+   - `DOMAIN`
+   - `MONGO_DB_URI`
+   - `JWT_SECRET`
+5. Click **Deploy Project**.
 
 ### ☁️ Heroku
 
 1. Go to [heroku.com](https://heroku.com) and log in.
 2. Create a new **app**.
-3. Download and install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) if you haven't.
-4. Unzip the archive and deploy with Git:
-
-<CodeBlock language="bash">
-# Unzip the script locally
-unzip nexwrite.zip -d medium-clone
-
-cd medium-clone
-
-# Initialize Git repo
-git init
-
-# Connect to Heroku app
-heroku git:remote -a your-heroku-app-name
-
-# Commit and push
-git add .
-git commit -m "Deploy NexWrite"
-git push heroku master
-</CodeBlock>
+3. Connect your GitHub account under **Deploy** tab.
+4. Search for your NexWrite private repo and click **Connect**.
+5. Scroll to **Manual Deploy** and click **Deploy Branch**.
+6. Under **Settings → Config Vars**, you can add:
+   - `LICENSE_KEY`
+   - `DOMAIN`
+   - `MONGO_DB_URI`
+   - `JWT_SECRET`
 
 <Note>
-Heroku no longer offers a free tier. Make sure your account has an active paid plan to deploy the app successfully.
+Heroku no longer offers a free tier. You must upgrade your account to deploy successfully.
 </Note>
 
 ---
 
-## Step 2: Set Build and Start Commands
+## Step 3: Wait for Build to Finish
 
-In your provider’s dashboard, set the following commands:
+Once your platform finishes building and starts the server:
 
-- **Build Command**
-
-<CodeBlock language="bash">
-npm install
-</CodeBlock>
-
-- **Start Command**
-
-<CodeBlock language="bash">
-npm start
-</CodeBlock>
-
-These commands will install all dependencies and start your app.
-
----
-
-## Step 3: Skip Manual Environment Variables (Handled Automatically)
-
-You **do not need to manually configure environment variables** such as:
-
-- `LICENSE_KEY`
-- `MONGO_DB_URI`
-- `JWT_SECRET`
-
-These are set during the installation wizard at `/install`. When you open the installer in the browser, you will be guided step-by-step to enter these values securely.
-
----
-
-## Step 4: Launch and Verify
-
-Once deployment finishes:
-
-1. Go to your live application URL (e.g. `https://your-app-name.onrender.com`).
-2. You’ll see the NexWrite **installation wizard**.
+1. Visit your live app URL
+2. You should see the **NexWrite Installation Wizard**
 
 <CodeBlock language="txt">
 https://your-app-domain/install
@@ -116,9 +106,7 @@ https://your-app-domain/install
 
 ---
 
-## Step 5: Complete the Installation Wizard
-
-Follow the wizard to complete your setup:
+## Step 4: Complete the Installation Wizard
 
 <Steps>
   <Step title="License Activation">
@@ -164,7 +152,7 @@ Once the installation is complete, your site is live and ready.
 - Log in with your administrator credentials.
 
 <Tip>
-  Want to make changes later? Just update the ZIP archive, re-upload it, and trigger redeployment.
+Need to update the code? Push changes to GitHub and redeploy from your PaaS dashboard.
 </Tip>
 
 ---
